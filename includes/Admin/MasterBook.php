@@ -85,14 +85,13 @@ class MasterBook {
 			$args['id'] = $id;
 		}
 
-		$insert_id = master_insert_books( $args );
+		$insert_id = master_insert_book( $args );
 
 		if ( is_wp_error( $insert_id ) ) {
 			wp_die( $insert_id->get_error_message() );
 		}
 
 		if ( $id ) {
-			error_log( 'Alt log: ' );
 
 			$redirect_to = admin_url( 'admin.php?page=library-master&action=edit&book-updated&id=' . $id );
 		} else {

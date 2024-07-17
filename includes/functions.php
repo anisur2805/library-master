@@ -7,7 +7,7 @@
  *
  * @return int|WP_Error
  */
-function master_insert_books( $args = array() ) {
+function master_insert_book( $args = array() ) {
 
 	global $wpdb;
 
@@ -74,7 +74,7 @@ function master_insert_books( $args = array() ) {
 }
 
 /**
- * Fetch book
+ * Fetch all books
  *
  * @param array
  *
@@ -123,7 +123,7 @@ function master_books_count() {
  *
  * @return object
  */
-function master_get_books( $id ) {
+function fetch_a_book( $id ) {
 	global $wpdb;
 
 	$book = wp_cache_get( 'ce-' . $id, 'book' );
