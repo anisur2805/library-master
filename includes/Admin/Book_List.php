@@ -42,6 +42,19 @@ class Book_List extends \WP_List_Table {
 		return $sortable_columns;
 	}
 
+	/**
+	 * Get bulk actions.
+	 *
+	 * @return array
+	 */
+	public function get_bulk_actions() {
+		$actions = array(
+			'bulk-delete' => __( 'Move to Trash', 'arpc-popup-creator' ),
+		);
+
+		return $actions;
+	}
+
 	protected function column_default( $item, $column_name ) {
 
 		switch ( $column_name ) {
