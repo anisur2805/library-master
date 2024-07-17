@@ -52,10 +52,19 @@ class Assets {
 		}
 
 		wp_localize_script(
+			'enquiry-script',
+			'library',
+			array(
+				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
+				'error'   => __( 'Something went wrong', 'library-master' ),
+			)
+		);
+
+		wp_localize_script(
 			'admin-script',
 			'library',
 			array(
-				'nonce'   => wp_create_nonce( 'library-master-admin-nonce' ),
+				'nonce'   => wp_create_nonce( 'library-master-nonce' ),
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'confirm' => __( 'Are you sure?', 'library-master' ),
 				'error'   => __( 'Something went wrong', 'library-master' ),

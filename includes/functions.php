@@ -8,62 +8,69 @@
  * @return int|WP_Error
  */
 function master_insert_books( $args = array() ) {
+
 	global $wpdb;
 
-	if ( empty( $args['name'] ) ) {
-		return new \WP_Error( 'no-name', __( 'You must provide a name', 'library-master' ) );
+	if ( empty( $args['title'] ) ) {
+		return new \WP_Error( 'no-title', __( 'You must provide a title', 'library-master' ) );
 	}
 
-	$defaults = array(
-		'name'       => '',
-		'book'       => '',
-		'phone'      => '',
-		'created_by' => get_current_user_id(),
-		'created_at' => current_time( 'mysql' ),
-	);
-
-	$data = wp_parse_args( $args, $defaults );
-
-	if ( isset( $data['id'] ) ) {
-
-		$id = $data['id'];
-		unset( $data['id'] );
-
-		$updated = $wpdb->update(
-			"{$wpdb->prefix}ce_books",
-			$data,
-			array( 'id' => $id ),
-			array(
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-			),
-			array( '%d' )
+		$defaults = array(
+			'title'            => '',
+			'author'           => '',
+			'publisher'        => '',
+			'isbn'             => '',
+			'publication_date' => '',
+			'created_by'       => get_current_user_id(),
+			'created_at'       => current_time( 'mysql' ),
 		);
 
-		return $updated;
-	} else {
+		$data = wp_parse_args( $args, $defaults );
 
-		$inserted = $wpdb->insert(
-			"{$wpdb->prefix}ce_books",
-			$data,
-			array(
-				'%s',
-				'%s',
-				'%s',
-				'%d',
-				'%s',
-			)
-		);
+		if ( isset( $data['id'] ) ) {
 
-		if ( ! $inserted ) {
-			return new \WP_Error( 'failed-to-insert', __( 'Failed to insert', 'library-master' ) );
+			$id = $data['id'];
+			unset( $data['id'] );
+
+			$updated = $wpdb->update(
+				"{$wpdb->prefix}ce_books",
+				$data,
+				array( 'id' => $id ),
+				array(
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+				),
+				array( '%d' )
+			);
+
+			return $updated;
+		} else {
+
+			$inserted = $wpdb->insert(
+				"{$wpdb->prefix}ce_books",
+				$data,
+				array(
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%s',
+					'%d',
+					'%s',
+				)
+			);
+
+			if ( ! $inserted ) {
+				return new \WP_Error( 'failed-to-insert', __( 'Failed to insert', 'library-master' ) );
+			}
+
+			return $wpdb->insert_id;
 		}
-
-		return $wpdb->insert_id;
-	}
 }
 
 /**
@@ -117,20 +124,20 @@ function master_books_count() {
  * @return object
  */
 function master_get_books( $id ) {
-	global $wpdb; // Global WPDB class object
+	global $wpdb;
 
-	// $book = wp_cache_get( 'ce-' . $id, 'book' );
-	// if ( false === $book ) {
+	$book = wp_cache_get( 'ce-' . $id, 'book' );
+	if ( false === $book ) {
 		$book = $wpdb->get_row(
-			$wpdb->prepare(  // use prepare for avoid sql injection
+			$wpdb->prepare(
 				"SELECT  * FROM {$wpdb->prefix}ce_books WHERE id = %d",
-				$id // select by id
+				$id
 			)
 		);
 
-		// wp_cache_set( 'ce-' . $id, $book, 'books' );
+		wp_cache_set( 'ce-' . $id, $book, 'books' );
 
-	// }
+	}
 	return $book;
 }
 

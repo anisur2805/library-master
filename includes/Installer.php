@@ -29,8 +29,10 @@ class Installer {
             title text NOT NULL,
             author text NOT NULL,
             publisher text NOT NULL,
-            isbn varchar(13) NOT NULL,
+            isbn varchar(20) NOT NULL,
             publication_date date NOT NULL,
+			created_at DATETIME NOT NULL,
+            created_by BIGINT(20) UNSIGNED NOT NULL,
             PRIMARY KEY  (`id`)
         ) $charset_collate";
 

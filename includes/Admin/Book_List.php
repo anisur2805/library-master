@@ -66,7 +66,7 @@ class Book_List extends \WP_List_Table {
 
 		return sprintf(
 			'<a href="%1$s"><strong>%2$s</strong></a> %3$s',
-			admin_url( 'admin.php?page=library-master&action=view&id' . $item->id ),
+			admin_url( 'admin.php?page=library-master&action=view&id=' . $item->id ),
 			$item->title,
 			$this->row_actions( $actions )
 		);
@@ -74,7 +74,7 @@ class Book_List extends \WP_List_Table {
 
 	public function column_cb( $item ) {
 		return sprintf(
-			'<input type="checkbox" name="address_id[]" value="%d" />',
+			'<input type="checkbox" name="book_id[]" value="%d" />',
 			$item->id
 		);
 	}

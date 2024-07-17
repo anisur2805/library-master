@@ -8,13 +8,13 @@ use CE\Library_Master\Admin;
 
 	<?php if ( isset( $_GET['inserted'] ) ) { ?>
 		<div class="notice notice-success">
-			<p><?php _e( 'Address added successfully!', 'library-master' ); ?></p>
+			<p><?php _e( 'Book added successfully!', 'library-master' ); ?></p>
 		</div>
 	<?php } ?>
 	
-	<?php if ( isset( $_GET['address-deleted'] ) ) { ?>
+	<?php if ( isset( $_GET['book-deleted'] ) ) { ?>
 		<div class="notice notice-success">
-			<p><?php _e( 'Address deleted successfully!', 'library-master' ); ?></p>
+			<p><?php _e( 'Book deleted successfully!', 'library-master' ); ?></p>
 		</div>
 	<?php } ?>
 	
