@@ -23,6 +23,7 @@ use CE\Library_Master\Admin;
 		<?php
 			$table = new Admin\Book_List();
 			$table->prepare_items();
+			$table->search_box( 'Search Items', 'item' );
 			$table->display();
 		?>
 		
