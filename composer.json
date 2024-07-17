@@ -1,0 +1,22 @@
+{
+	"name": "anisur2805/library-master",
+	"description": "A plugin for managing a library system that handles book records using custom SQL queries and a REST API",
+	"type": "wordpress-plugin",
+	"license": "GPLv2",
+	"authors": [
+		{
+			"name": "Anisur Rahman",
+			"email": "anisur2805@gmail.com"
+		}
+	],
+	"minimum-stability": "dev",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"CE\\Library_Master\\": "includes/"
+		},
+		"files": [
+			"includes/functions.php"
+		]
+	}
+}
