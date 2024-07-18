@@ -19,13 +19,13 @@ class LibraryMaster extends WP_REST_Controller {
 			'/' . $this->rest_base,
 			array(
 				array(
-					'method'              => WP_REST_Server::READABLE,
+					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_book_items' ),
 					'permission_callback' => array( $this, 'get_items_permission_check' ),
 					'args'                => $this->get_collection_params(),
 				),
 				array(
-					'method'              => WP_REST_Server::CREATABLE,
+					'methods'             => WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'create_book_item' ),
 					'permission_callback' => array( $this, 'create_item_permission_check' ),
 					'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::CREATABLE ),
@@ -153,7 +153,7 @@ class LibraryMaster extends WP_REST_Controller {
 	 * @return \WP_REST_Request|WP_Error
 	 */
 	public function get_book_item( \WP_REST_Request $request ) {
-		$book = fetch_a_book( $request['id'] );
+		$book = $this->get_book( $request['id'] );
 
 		$response = $this->prepare_item_for_response( $book, $request );
 		$response = rest_ensure_response( $response );
@@ -206,7 +206,7 @@ class LibraryMaster extends WP_REST_Controller {
 		$response = $this->prepare_item_for_response( $book, $request );
 
 		$response->set_status( 201 );
-		$response->header( 'Location', rest_url( sprintf( '%s%s%d', $this->namespace, $this->rest_base, $book_id ) ) );
+		$response->header( 'Location', rest_url( sprintf( '%s/%s/%d', $this->namespace, $this->rest_base, $book_id ) ) );
 
 		return rest_ensure_response( $response );
 	}
