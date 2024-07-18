@@ -24,6 +24,6 @@ class Shortcode {
 		wp_enqueue_script( 'library-script' );
 		wp_enqueue_style( 'library-style' );
 
-		return '<div class="oop-shortcode">BG Green Shortcode</div>';
+		return '<div id="ce-app"></div>';
 	}
 }
