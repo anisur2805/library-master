@@ -11,7 +11,7 @@ class MasterBook {
 	public function plugin_page() {
 		$action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
 		$id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
-		$book   = master_get_books( $id );
+		$book   = fetch_a_book( $id );
 
 		switch ( $action ) {
 
