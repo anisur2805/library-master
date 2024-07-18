@@ -6,7 +6,7 @@
 		<table class="form-table">
 			<tr class="<?php echo $this->has_error( 'title' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
-					<label for="title"><?php _e( 'Title', 'library-master' ); ?></label>
+					<label for="title"><?php _e( 'Title*', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input id="title" name="title" value="" type="text" class="regular-text" />
@@ -15,28 +15,37 @@
 					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'author' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
-					<label for="author"><?php _e( 'Author', 'library-master' ); ?></label>
+					<label for="author"><?php _e( 'Author*', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="author" id="author" class="regular-text" value="" />
+					<?php if ( $this->has_error( 'author' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'author' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'publisher' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
-					<label for="publisher"><?php _e( 'Publisher', 'library-master' ); ?></label>
+					<label for="publisher"><?php _e( 'Publisher*', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="publisher" id="publisher" class="regular-text" value="" />
+					<?php if ( $this->has_error( 'publisher' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'publisher' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'isbn' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
-					<label for="isbn"><?php _e( 'ISBN', 'library-master' ); ?></label>
+					<label for="isbn"><?php _e( 'ISBN*', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="isbn" id="isbn" class="regular-text" value="" />
+					<?php if ( $this->has_error( 'isbn' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'isbn' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>

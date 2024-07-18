@@ -1,5 +1,6 @@
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php _e( 'Edit book', 'library-master' ); ?></h1>
+	<a href="<?php echo admin_url( 'admin.php?page=library-master' ); ?>" class="page-title-action"> <?php _e( 'Back to Book List', 'library-master' ); ?> </a>
 	<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro optio repellendus veritatis excepturi, quas odio.</p>
 	
 	<?php
@@ -21,28 +22,37 @@
 					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'author' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
 					<label for="author"><?php _e( 'Author', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="author" id="author" class="regular-text" value="<?php echo esc_attr( $book->author ); ?>" />
+					<?php if ( $this->has_error( 'author' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'author' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'publisher' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
 					<label for="publisher"><?php _e( 'Publisher', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="publisher" id="publisher" class="regular-text" value="<?php echo esc_attr( $book->publisher ); ?>" />
+					<?php if ( $this->has_error( 'publisher' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'publisher' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="<?php echo $this->has_error( 'isbn' ) ? 'form-invalid' : ''; ?>">
 				<th scope="row">
 					<label for="isbn"><?php _e( 'ISBN', 'library-master' ); ?></label>
 				</th>
 				<td>
 					<input type="text" name="isbn" id="isbn" class="regular-text" value="<?php echo esc_attr( $book->isbn ); ?>" />
+					<?php if ( $this->has_error( 'isbn' ) ) : ?>
+						<p class="description error"><?php echo $this->get_error( 'isbn' ); ?></p>
+					<?php endif; ?>
 				</td>
 			</tr>
 			<tr>

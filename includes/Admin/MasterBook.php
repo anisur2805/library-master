@@ -69,6 +69,10 @@ class MasterBook {
 			$this->errors['publisher'] = __( 'Please provide a publisher number.', 'library-master' );
 		}
 
+		if ( empty( $isbn ) ) {
+			$this->errors['isbn'] = __( 'Please provide a ISBN number.', 'library-master' );
+		}
+
 		if ( ! empty( $this->errors ) ) {
 			return;
 		}
