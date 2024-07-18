@@ -488,6 +488,7 @@ class LibraryMaster extends WP_REST_Controller {
 					'description' => __( 'Author of the book.' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
+					'required'    => true,
 					'arg_options' => array(
 						'sanitize_callback' => 'sanitize_text_field',
 					),
@@ -505,6 +506,7 @@ class LibraryMaster extends WP_REST_Controller {
 					'description' => __( 'ISBN' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
+					'required'    => true,
 					'arg_options' => array(
 						'sanitize_callback' => 'sanitize_text_field',
 					),
