@@ -48,6 +48,8 @@ function master_insert_book( $args = array() ) {
 				array( '%d' )
 			);
 
+			// master_book_purge_cache( $id );
+
 			return $updated;
 		} else {
 
@@ -69,6 +71,8 @@ function master_insert_book( $args = array() ) {
 				return new \WP_Error( 'failed-to-insert', __( 'Failed to insert', 'library-master' ) );
 			}
 
+			// master_book_purge_cache();
+
 			return $wpdb->insert_id;
 		}
 }
@@ -83,6 +87,9 @@ function master_insert_book( $args = array() ) {
 function fetch_master_books( $args = array() ) {
 	global $wpdb;
 
+	$cache_key = 'ce_all_books';
+	$books     = get_transient( $cache_key );
+
 	$defaults = array(
 		'offset'  => 0,
 		'number'  => 20,
@@ -92,15 +99,21 @@ function fetch_master_books( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$items = $wpdb->get_results(
-		$wpdb->prepare(
-			"SELECT * FROM {$wpdb->prefix}ce_books
-            ORDER BY {$args["orderby"]} {$args["order"]}
-            LIMIT %d OFFSET %d",
-			$args['number'],
-			$args['offset'],
-		)
+	$sql = $wpdb->prepare(
+		"SELECT * FROM {$wpdb->prefix}ce_books
+		ORDER BY {$args["orderby"]} {$args["order"]}
+		LIMIT %d OFFSET %d",
+		$args['number'],
+		$args['offset'],
 	);
+
+	$items = get_transient( $cache_key );
+
+	if ( false === $items ) {
+		$items = $wpdb->get_results( $sql );
+
+		set_transient( $cache_key, $items, 12 * HOUR_IN_SECONDS );
+	}
 
 	return $items;
 }
@@ -113,7 +126,16 @@ function fetch_master_books( $args = array() ) {
 function master_books_count() {
 	global $wpdb;
 
-	return (int) $wpdb->get_var( "SELECT count(id) FROM {$wpdb->prefix}ce_books " );
+	$cache_key = 'ce_all_books_count';
+	$count     = get_transient( $cache_key );
+
+	if ( false === $count ) {
+		$count = (int) $wpdb->get_var( "SELECT count(id) FROM {$wpdb->prefix}ce_books" );
+
+		set_transient( $cache_key, $count, 12 * HOUR_IN_SECONDS );
+	}
+
+	return $count;
 }
 
 /**
@@ -126,7 +148,9 @@ function master_books_count() {
 function fetch_a_book( $id ) {
 	global $wpdb;
 
-	$book = wp_cache_get( 'ce-' . $id, 'book' );
+	$cache_key = 'ce-single-book-' . $id;
+	$book      = get_transient( $cache_key );
+
 	if ( false === $book ) {
 		$book = $wpdb->get_row(
 			$wpdb->prepare(
@@ -135,7 +159,7 @@ function fetch_a_book( $id ) {
 			)
 		);
 
-		wp_cache_set( 'ce-' . $id, $book, 'books' );
+		set_transient( $cache_key, $book, 12 * HOUR_IN_SECONDS );
 
 	}
 	return $book;
@@ -151,9 +175,26 @@ function fetch_a_book( $id ) {
 function master_delete_book( $id ) {
 	global $wpdb;
 
+	// master_book_purge_cache( $id );
+
 	return $wpdb->delete(
 		$wpdb->prefix . 'ce_books',
 		array( 'id' => $id ),
 		array( '%d' ),
 	);
+}
+
+/**
+ * Purge the cache for books
+ *
+ * @param  int $book_id
+ *
+ * @return void
+ */
+function master_book_purge_cache( $book_id = null ) {
+	$group = 'master';
+
+	if ( $book_id ) {
+		delete_transient( 'book-' . $book_id );
+	}
 }
