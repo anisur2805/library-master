@@ -304,6 +304,20 @@ class LibraryMaster extends WP_REST_Controller {
 		return $this->get_item_permissions_check( $request );
 	}
 
+	public function get_item_permissions_check( $request ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return false;
+		}
+
+		$book = $this->get_book( $request['id'] );
+
+		if ( is_wp_error( $book ) ) {
+			return $book;
+		}
+
+		return true;
+	}
+
 	/**
 	* Prepare the item for create or update operation
 	*
