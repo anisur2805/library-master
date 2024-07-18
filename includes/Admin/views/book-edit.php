@@ -1,6 +1,5 @@
 <div class="wrap">
-	<h1 class="wp-heading-inline"><?php _e( 'Edit book', 'library-master' ); ?></h1>
-	<a href="<?php echo admin_url( 'admin.php?page=library-master' ); ?>" class="page-title-action"> <?php _e( 'Back to Book List', 'library-master' ); ?> </a>
+	<h1 class="wp-heading-inline"><?php _e( 'Edit book', 'library-master' ); ?><a href="<?php echo admin_url( 'admin.php?page=library-master' ); ?>" class="page-title-action"> <?php _e( 'Back to Book List', 'library-master' ); ?> </a></h1>
 	<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro optio repellendus veritatis excepturi, quas odio.</p>
 	
 	<?php

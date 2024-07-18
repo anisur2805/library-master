@@ -2,9 +2,7 @@
 use CE\Library_Master\Admin;
 ?>
 <div class="wrap">
-	<h1 class="wp-heading-inline"> <?php _e( 'Library Master Books', 'library-master' ); ?> </h1>
-
-	<a href="<?php echo admin_url( 'admin.php?page=library-master&action=new' ); ?>" class="page-title-action"> <?php _e( 'Add New', 'library-master' ); ?> </a>
+	<h1 class="wp-heading-inline"> <?php _e( 'Library Master Books', 'library-master' ); ?> <a href="<?php echo admin_url( 'admin.php?page=library-master&action=new' ); ?>" class="page-title-action"> <?php _e( 'Add New', 'library-master' ); ?> </a></h1>
 
 	<?php if ( isset( $_GET['inserted'] ) ) { ?>
 		<div class="notice notice-success">
