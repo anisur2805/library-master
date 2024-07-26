@@ -48,7 +48,7 @@ function master_insert_book( $args = array() ) {
 				array( '%d' )
 			);
 
-			// master_book_purge_cache( $id );
+			master_book_purge_cache( $id );
 
 			return $updated;
 		} else {
@@ -71,7 +71,7 @@ function master_insert_book( $args = array() ) {
 				return new \WP_Error( 'failed-to-insert', __( 'Failed to insert', 'library-master' ) );
 			}
 
-			// master_book_purge_cache();
+			master_book_purge_cache();
 
 			return $wpdb->insert_id;
 		}
@@ -139,7 +139,7 @@ function master_books_count() {
 }
 
 /**
- * Fetch a single contact form DB
+ * Fetch a single book form DB
  *
  * @param int $id
  *
@@ -175,7 +175,7 @@ function fetch_a_book( $id ) {
 function master_delete_book( $id ) {
 	global $wpdb;
 
-	// master_book_purge_cache( $id );
+	master_book_purge_cache( $id );
 
 	return $wpdb->delete(
 		$wpdb->prefix . 'ce_books',
@@ -185,16 +185,24 @@ function master_delete_book( $id ) {
 }
 
 /**
- * Purge the cache for books
+ * Purge cache for books.
  *
- * @param  int $book_id
+ * Deletes the transients related to books, including a specific book if its ID is provided.
  *
- * @return void
+ * @param int|null $book_id Optional. The ID of the book to purge the cache for. Default null.
  */
 function master_book_purge_cache( $book_id = null ) {
-	$group = 'master';
+	// Define constants for transient keys
+	$all_books_transient_key       = 'ce_all_books';
+	$all_books_count_transient_key = 'ce_all_books_count';
+	$single_book_transient_prefix  = 'ce-single-book-';
 
-	if ( $book_id ) {
-		delete_transient( 'book-' . $book_id );
+	// Delete transients for all books and all books count
+	delete_transient( $all_books_transient_key );
+	delete_transient( $all_books_count_transient_key );
+
+	// If a book ID is provided, delete the transient for that specific book
+	if ( ! is_null( $book_id ) && is_int( $book_id ) && $book_id > 0 ) {
+		delete_transient( $single_book_transient_prefix . $book_id );
 	}
 }
