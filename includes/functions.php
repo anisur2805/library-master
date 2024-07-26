@@ -87,32 +87,56 @@ function master_insert_book( $args = array() ) {
 function fetch_master_books( $args = array() ) {
 	global $wpdb;
 
-	$cache_key = 'ce_all_books';
-	$books     = get_transient( $cache_key );
-
 	$defaults = array(
 		'offset'  => 0,
 		'number'  => 20,
 		'orderby' => 'id',
 		'order'   => 'ASC',
+		'search'  => '',
 	);
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$sql = $wpdb->prepare(
-		"SELECT * FROM {$wpdb->prefix}ce_books
-		ORDER BY {$args["orderby"]} {$args["order"]}
-		LIMIT %d OFFSET %d",
-		$args['number'],
-		$args['offset'],
-	);
+	$search_term = isset( $_REQUEST['s'] ) ? sanitize_text_field( $_REQUEST['s'] ) : '';
 
-	$items = get_transient( $cache_key );
+	// Generate a cache key that includes the search term if present
+	$key       = md5( serialize( array_diff_assoc( $args, $defaults ) ) );
+	$cache_key = "ce_all_books:$key";
+
+	// Only use cache when there's no search term
+	if ( empty( $search_term ) ) {
+		$items = get_transient( $cache_key );
+	} else {
+		$items = false;
+	}
 
 	if ( false === $items ) {
+		$search_sql = '';
+		if ( ! empty( $search_term ) ) {
+			$search_term = '%' . $wpdb->esc_like( $search_term ) . '%';
+			$search_sql  = $wpdb->prepare(
+				'WHERE author LIKE %s OR title LIKE %s OR isbn LIKE %s',
+				$search_term,
+				$search_term,
+				$search_term
+			);
+		}
+
+		$sql = $wpdb->prepare(
+			"SELECT * FROM {$wpdb->prefix}ce_books
+			{$search_sql}
+			ORDER BY {$args['orderby']} {$args['order']}
+			LIMIT %d OFFSET %d",
+			$args['number'],
+			$args['offset']
+		);
+
 		$items = $wpdb->get_results( $sql );
 
-		set_transient( $cache_key, $items, 12 * HOUR_IN_SECONDS );
+		// Set cache only when there's no search term
+		if ( empty( $search_term ) ) {
+			set_transient( $cache_key, $items, 12 * HOUR_IN_SECONDS );
+		}
 	}
 
 	return $items;
@@ -147,6 +171,10 @@ function master_books_count() {
  */
 function fetch_a_book( $id ) {
 	global $wpdb;
+
+	if ( ! $id ) {
+		return;
+	}
 
 	$cache_key = 'ce-single-book-' . $id;
 	$book      = get_transient( $cache_key );
