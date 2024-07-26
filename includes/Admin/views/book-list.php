@@ -16,14 +16,20 @@ use CE\Library_Master\Admin;
 		</div>
 	<?php } ?>
 	
-	<form action="" method="post">
+	<form action="" method="get">
 	
 		<?php
-			$table = new Admin\Book_List();
-			$table->prepare_items();
-			$table->search_box( 'Search Items', 'item' );
-			$table->display();
+		$table = new Admin\Book_List();
+		$table->prepare_items();
+
+		if ( isset( $_REQUEST['s'] ) ) {
+			$search_item = $_REQUEST['s'];
+		}
+
+		$table->search_box( 'Search Items', 'search-id' );
+		$table->display();
 		?>
+		<input type="hidden" name="page" value="<?php echo esc_attr( $_REQUEST['page'] ); ?>" />
 		
 	</form>
 </div>
