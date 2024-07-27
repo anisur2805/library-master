@@ -185,6 +185,8 @@ class LibraryMaster extends WP_REST_Controller {
 	 */
 	public function create_book_item( \WP_REST_Request $request ) {
 
+		error_log( 'Alt log: ' . print_r( $request->get_params() ) );
+
 		$book = $this->prepare_item_for_database( $request );
 
 		if ( is_wp_error( $book ) ) {

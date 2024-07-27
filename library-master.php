@@ -65,6 +65,7 @@ final class LIBRARY_MASTER {
 		define( 'LIBRARY_MASTER_URL', plugins_url( '', LIBRARY_MASTER_FILE ) );
 		define( 'LIBRARY_MASTER_ASSETS', LIBRARY_MASTER_URL . '/assets' );
 		define( 'LIBRARY_MASTER_INCLUDES', LIBRARY_MASTER_URL . '/includes' );
+		define( 'LIBRARY_MASTER_DIST', LIBRARY_MASTER_URL . '/dist' );
 	}
 
 	/**
