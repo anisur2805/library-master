@@ -1,22 +1,22 @@
-export default function Table({filteredBooks, message }) {
+export default function Table({ filteredBooks, message }) {
     return (
         <div className="bg-white shadow rounded-lg overflow-hidden">
-            <table className="m-0 min-w-full divide-y divide-gray-200">
+            <table className="!m-0 min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                     <tr>
-                        <th className="text-3xl font-bold px-6 py-4 text-left text-black-500 uppercase tracking-wider">
+                        <th className="px-2 sm:px-4 md:px-6 py-4 text-left text-md font-bold text-gray-700 uppercase tracking-wider">
                             Title
                         </th>
-                        <th className="text-3xl font-bold px-6 py-4 text-left text-black-500 uppercase tracking-wider">
+                        <th className="px-2 sm:px-4 md:px-6 py-4 text-left text-md font-bold text-gray-700 uppercase tracking-wider">
                             Author
                         </th>
-                        <th className="text-3xl font-bold px-6 py-4 text-left text-black-500 uppercase tracking-wider">
+                        <th className="px-2 sm:px-4 md:px-6 py-4 text-left text-md font-bold text-gray-700 uppercase tracking-wider">
                             Publisher
                         </th>
-                        <th className="text-3xl font-bold px-6 py-4 text-left text-black-500 uppercase tracking-wider">
+                        <th className="px-2 sm:px-4 md:px-6 py-4 text-left text-md font-bold text-gray-700 uppercase tracking-wider">
                             ISBN
                         </th>
-                        <th className="text-3xl font-bold px-6 py-4 text-left text-black-500 uppercase tracking-wider">
+                        <th className="px-2 sm:px-4 md:px-6 py-4 text-left text-md font-bold text-gray-700 uppercase tracking-wider">
                             Publication Date
                         </th>
                     </tr>

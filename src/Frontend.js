@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { IoSearchSharp } from "react-icons/io5";
 import TableHeader from "./components/TableHeader";
 import Table from "./components/Table";
-import Pagination from "./components/Pagination";
+import { filteredModifiedBooks } from "./helper";
 
 function Frontend() {
     const [books, setBooks] = useState([]);
+    const [filterBooks, setFilterBooks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [message, setMessage] = useState("");
-    const [error, setError] = useState(null);
-    const [loader, setLoader] = useState("Save setting");
 
     const url = `${app.root}library/v1/books`;
 
@@ -18,7 +16,6 @@ function Frontend() {
         axios
             .get(url, {
                 headers: {
-                    Authorization: `Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjEwMDAzIiwiaWF0IjoxNzIxOTkwMzA3LCJuYmYiOjE3MjE5OTAzMDcsImV4cCI6MTcyMjU5NTEwNywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.LXH8qmwlUEbeCVh7pEaRwOZLeoUfRjwrdxGhRNQkO-Y`,
                     "Content-Type": "application/json",
                 },
             })
@@ -31,43 +28,29 @@ function Frontend() {
             });
     }, [url, searchTerm]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        setFilterBooks(books);
+    }, [books]);
 
-        if (searchTerm) {
-            const filteredBooks = books.filter(
-                (book) =>
-                    book.title
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                    book.author
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                    book.isbn
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase()) ||
-                    book.publication_date
-                        .toLowerCase()
-                        .includes(searchTerm.toLowerCase())
-            );
-            setBooks(filteredBooks);
-        } else {
+    const handleSubmit = () => {
+        if (searchTerm === "") {
             setMessage("No search term found");
+            return;
         }
+
+        const filteredBooks = filteredModifiedBooks(books, searchVal);
+        setFilterBooks(filteredBooks);
     };
 
     const handleInputChange = (e) => {
-        e.preventDefault();
+        const searchVal = e.target.value.toLowerCase();
+        setSearchTerm(searchVal);
 
-        setSearchTerm(e.target.value);
+        const filteredBooks = filteredModifiedBooks(books, searchVal);
 
-        const filteredBooks = books.filter(
-            (book) =>
-                book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.isbn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.publication_date.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        setTimeout(() => {
+            setFilterBooks(filteredBooks);
+        }, 1000);
 
         if (filteredBooks.length === 0) {
             setMessage("No matching books found");
@@ -76,21 +59,14 @@ function Frontend() {
         }
     };
 
-    const filteredBooks = books.filter(
-        (book) =>
-            book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            book.isbn.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            book.publication_date
-                .toLowerCase()
-                .includes(searchTerm.toLowerCase())
-    );
-
     return (
         <div className="ce-book-library-frontend">
-            <TableHeader handleSubmit={handleSubmit} handleInputChange={handleInputChange} searchTerm={searchTerm} />
-            <Table filteredBooks={filteredBooks} message={message} />
-            <Pagination />
+            <TableHeader
+                handleSubmit={handleSubmit}
+                handleInputChange={handleInputChange}
+                searchTerm={searchTerm}
+            />
+            <Table filteredBooks={filterBooks} message={message} />
         </div>
     );
 }
