@@ -89,7 +89,7 @@ function fetch_master_books( $args = array() ) {
 
 	$defaults = array(
 		'offset'  => 0,
-		'number'  => 20,
+		'number'  => 10,
 		'orderby' => 'id',
 		'order'   => 'ASC',
 		'search'  => '',

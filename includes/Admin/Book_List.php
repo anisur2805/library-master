@@ -96,7 +96,7 @@ class Book_List extends \WP_List_Table {
 		$column   = $this->get_columns();
 		$hidden   = array();
 		$sortable = $this->get_sortable_columns();
-		$per_page = 20;
+		$per_page = 10;
 
 		$this->_column_headers = array( $column, $hidden, $sortable );
 
