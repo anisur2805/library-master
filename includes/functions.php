@@ -154,7 +154,7 @@ function master_books_count() {
 	$count     = get_transient( $cache_key );
 
 	if ( false === $count ) {
-		$count = (int) $wpdb->get_var( "SELECT count(id) FROM {$wpdb->prefix}ce_books" );
+		$count = (int) $wpdb->get_var( "SELECT count(book_id) FROM {$wpdb->prefix}ce_books" );
 
 		set_transient( $cache_key, $count, 12 * HOUR_IN_SECONDS );
 	}
