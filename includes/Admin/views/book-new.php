@@ -1,6 +1,6 @@
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php _e( 'Add Book', 'library-master' ); ?></h1>
-	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Temporibus numquam accusantium ducimus!</p>
+	<p><?php _e( 'For add new book please fill the form.', 'library-master' ); ?></p>
 
 	<form action="" method="post">
 		<table class="form-table">

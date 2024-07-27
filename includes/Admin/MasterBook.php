@@ -3,13 +3,15 @@
 namespace CE\Library_Master\Admin;
 
 use CE\Library_Master\Traits\Form_Error;
+use CE\Library_Master\Traits\Sanitization;
 
 class MasterBook {
 
 	use Form_Error;
+	use Sanitization;
 
 	public function plugin_page() {
-		$action = isset( $_GET['action'] ) ? $_GET['action'] : 'list';
+		$action = isset( $_GET['action'] ) ? $this->sanitize_user_input( $_GET['action'] ) : 'list';
 		$id     = isset( $_GET['id'] ) ? intval( $_GET['id'] ) : 0;
 		$book   = fetch_a_book( $id );
 
@@ -42,20 +44,21 @@ class MasterBook {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'new-book' ) ) {
-			wp_die( 'Are you cheating!' );
+		//check and validate nonce
+		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_POST['_wpnonce'] ) ), 'new-book' ) ) {
+			wp_send_json_error( __( 'Are you cheating!', 'library-master' ) );
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'Are you cheating!' );
+			wp_send_json_error( __( 'Are you cheating!', 'library-master' ) );
 		}
 
 		$id               = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : 0;
-		$title            = isset( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
-		$author           = isset( $_POST['author'] ) ? sanitize_textarea_field( $_POST['author'] ) : '';
-		$publisher        = isset( $_POST['publisher'] ) ? sanitize_text_field( $_POST['publisher'] ) : '';
-		$isbn             = isset( $_POST['isbn'] ) ? sanitize_text_field( $_POST['isbn'] ) : '';
-		$publication_date = isset( $_POST['publication_date'] ) ? sanitize_text_field( $_POST['publication_date'] ) : '';
+		$title            = isset( $_POST['title'] ) ? $this->sanitize_user_input( $_POST['title'] ) : '';
+		$author           = isset( $_POST['author'] ) ? $this->sanitize_user_input( $_POST['author'] ) : '';
+		$publisher        = isset( $_POST['publisher'] ) ? $this->sanitize_user_input( $_POST['publisher'] ) : '';
+		$isbn             = isset( $_POST['isbn'] ) ? $this->sanitize_user_input( $_POST['isbn'] ) : '';
+		$publication_date = isset( $_POST['publication_date'] ) ? $this->sanitize_user_input( $_POST['publication_date'] ) : '';
 
 		if ( empty( $title ) ) {
 			$this->errors['title'] = __( 'Please provide a title.', 'library-master' );
@@ -96,7 +99,6 @@ class MasterBook {
 		}
 
 		if ( $id ) {
-
 			$redirect_to = admin_url( 'admin.php?page=library-master&action=edit&book-updated&id=' . $id );
 		} else {
 			$redirect_to = admin_url( 'admin.php?page=library-master&inserted=true' );
@@ -107,12 +109,16 @@ class MasterBook {
 	}
 
 	public function delete_book() {
-		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'master-delete-book' ) ) {
-			wp_die( 'Are you cheating mia!' );
+		// if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'master-delete-book' ) ) {
+		// 	wp_die( __( 'Are you cheating mia!', 'library-master' ) );
+		// }
+
+		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'master-delete-book' ) ) {
+			wp_send_json_error( __( 'Are you cheating!', 'library-master' ) );
 		}
 
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( 'Are you cheating!' );
+			wp_die( __( 'Are you cheating!', 'library-master' ) );
 		}
 
 		$id = isset( $_REQUEST['id'] ) ? intval( $_REQUEST['id'] ) : 0;

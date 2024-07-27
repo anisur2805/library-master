@@ -1,7 +1,7 @@
 <div class="wrap">
 	<h1 class="wp-heading-inline"><?php _e( 'View Single book', 'library-master' ); ?></h1>
 	<a href="<?php echo admin_url( 'admin.php?page=library-master' ); ?>" class="page-title-action"> <?php _e( 'Back to book list', 'library-master' ); ?> </a>
-	<p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Porro optio repellendus veritatis excepturi, quas odio.</p>
+	<p><?php _e( 'This is the view screen of the single book.', 'library-master' ); ?></p>
 
 	<table class="form-table">
 		<tr>
