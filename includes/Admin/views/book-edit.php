@@ -6,6 +6,11 @@
 	if ( isset( $_GET['book-updated'] ) ) {
 		printf( '<div class="notice notice-success"><p>' . __( 'Book has been update successfully!', 'library-master' ) . '</p></div>' );
 	}
+
+	if ( ! is_object( $book ) ) {
+		echo '<h2>' . __( 'No book found!', 'library-master' ) . '</h2>';
+		return;
+	}
 	?>
 	
 	<form action="" method="post">
@@ -65,7 +70,7 @@
 			<tr>
 				<th scope="row"></th>
 				<td>
-					<input type="hidden" name="id" value="<?php echo esc_attr( $book->id ); ?>" />
+					<input type="hidden" name="id" value="<?php echo esc_attr( $book->book_id ); ?>" />
 					<?php
 					wp_nonce_field( 'new-book' );
 					submit_button( __( 'Update Book', 'library-master' ), 'primary', 'submit_book' );

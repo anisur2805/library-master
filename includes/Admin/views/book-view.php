@@ -3,6 +3,12 @@
 	<a href="<?php echo admin_url( 'admin.php?page=library-master' ); ?>" class="page-title-action"> <?php _e( 'Back to book list', 'library-master' ); ?> </a>
 	<p><?php _e( 'This is the view screen of the single book.', 'library-master' ); ?></p>
 
+	<?php
+	if ( ! is_object( $book ) ) {
+		echo '<h2>' . __( 'No book found!', 'library-master' ) . '</h2>';
+		return;
+	}
+	?>
 	<table class="form-table">
 		<tr>
 			<th scope="row">

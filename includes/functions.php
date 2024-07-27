@@ -27,15 +27,15 @@ function master_insert_book( $args = array() ) {
 
 		$data = wp_parse_args( $args, $defaults );
 
-		if ( isset( $data['id'] ) ) {
+		if ( isset( $data['book_id'] ) ) {
 
-			$id = $data['id'];
-			unset( $data['id'] );
+			$id = $data['book_id'];
+			unset( $data['book_id'] );
 
 			$updated = $wpdb->update(
 				"{$wpdb->prefix}ce_books",
 				$data,
-				array( 'id' => $id ),
+				array( 'book_id' => $id ),
 				array(
 					'%s',
 					'%s',
@@ -90,8 +90,8 @@ function fetch_master_books( $args = array() ) {
 	$defaults = array(
 		'offset'  => 0,
 		'number'  => 20,
-		'orderby' => 'id',
-		'order'   => 'ASC',
+		'orderby' => 'book_id',
+		'order'   => 'DESC',
 		'search'  => '',
 	);
 
@@ -101,7 +101,7 @@ function fetch_master_books( $args = array() ) {
 
 	// Generate a cache key that includes the search term if present
 	$key       = md5( serialize( array_diff_assoc( $args, $defaults ) ) );
-	$cache_key = "ce_all_books:$key";
+	$cache_key = 'ce_all_books';
 
 	// Only use cache when there's no search term
 	if ( empty( $search_term ) ) {
@@ -154,7 +154,7 @@ function master_books_count() {
 	$count     = get_transient( $cache_key );
 
 	if ( false === $count ) {
-		$count = (int) $wpdb->get_var( "SELECT count(id) FROM {$wpdb->prefix}ce_books" );
+		$count = (int) $wpdb->get_var( "SELECT count(book_id) FROM {$wpdb->prefix}ce_books" );
 
 		set_transient( $cache_key, $count, 12 * HOUR_IN_SECONDS );
 	}
@@ -182,7 +182,7 @@ function fetch_a_book( $id ) {
 	if ( false === $book ) {
 		$book = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT  * FROM {$wpdb->prefix}ce_books WHERE id = %d",
+				"SELECT  * FROM {$wpdb->prefix}ce_books WHERE book_id = %d",
 				$id
 			)
 		);
@@ -207,7 +207,7 @@ function master_delete_book( $id ) {
 
 	return $wpdb->delete(
 		$wpdb->prefix . 'ce_books',
-		array( 'id' => $id ),
+		array( 'book_id' => $id ),
 		array( '%d' ),
 	);
 }

@@ -89,7 +89,7 @@ class MasterBook {
 		);
 
 		if ( $id ) {
-			$args['id'] = $id;
+			$args['book_id'] = $id;
 		}
 
 		$insert_id = master_insert_book( $args );
@@ -109,10 +109,6 @@ class MasterBook {
 	}
 
 	public function delete_book() {
-		// if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'master-delete-book' ) ) {
-		// 	wp_die( __( 'Are you cheating mia!', 'library-master' ) );
-		// }
-
 		if ( ! isset( $_REQUEST['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( wp_unslash( $_REQUEST['_wpnonce'] ) ), 'master-delete-book' ) ) {
 			wp_send_json_error( __( 'Are you cheating!', 'library-master' ) );
 		}

@@ -39,7 +39,7 @@ class LibraryMaster extends WP_REST_Controller {
 			'/' . $this->rest_base . '/(?P<id>[\d]+)',
 			array(
 				'args'   => array(
-					'id' => array(
+					'book_id' => array(
 						'description' => __( 'Unique identifier for the object.' ),
 						'type'        => 'integer',
 					),
@@ -136,7 +136,7 @@ class LibraryMaster extends WP_REST_Controller {
 			return false;
 		}
 
-		$book = $this->get_book( $request['id'] );
+		$book = $this->get_book( $request['book_id'] );
 
 		if ( is_wp_error( $book ) ) {
 			return $book;
@@ -153,7 +153,7 @@ class LibraryMaster extends WP_REST_Controller {
 	 * @return \WP_REST_Request|WP_Error
 	 */
 	public function get_book_item( \WP_REST_Request $request ) {
-		$book = $this->get_book( $request['id'] );
+		$book = $this->get_book( $request['book_id'] );
 
 		$response = $this->prepare_item_for_response( $book, $request );
 		$response = rest_ensure_response( $response );
@@ -256,8 +256,8 @@ class LibraryMaster extends WP_REST_Controller {
 		$data   = array();
 		$fields = $this->get_fields_for_response( $request );
 
-		if ( in_array( 'id', $fields, true ) ) {
-			$data['id'] = (int) $item->id;
+		if ( in_array( 'book_id', $fields, true ) ) {
+			$data['book_id'] = (int) $item->book_id;
 		}
 
 		if ( in_array( 'title', $fields, true ) ) {
@@ -309,7 +309,7 @@ class LibraryMaster extends WP_REST_Controller {
 			return false;
 		}
 
-		$book = $this->get_book( $request['id'] );
+		$book = $this->get_book( $request['book_id'] );
 
 		if ( is_wp_error( $book ) ) {
 			return $book;
@@ -369,7 +369,7 @@ class LibraryMaster extends WP_REST_Controller {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function update_item( $request ) {
-		$book     = $this->get_book( $request['id'] );
+		$book     = $this->get_book( $request['book_id'] );
 		$prepared = $this->prepare_item_for_database( $request );
 
 		$prepared = array_merge( (array) $book, $prepared );
@@ -384,7 +384,7 @@ class LibraryMaster extends WP_REST_Controller {
 			);
 		}
 
-		$book     = $this->get_book( $request['id'] );
+		$book     = $this->get_book( $request['book_id'] );
 		$response = $this->prepare_item_for_response( $book, $request );
 
 		return rest_ensure_response( $response );
@@ -409,10 +409,10 @@ class LibraryMaster extends WP_REST_Controller {
 	 * @return \WP_Error|WP_REST_Response
 	 */
 	public function delete_item( $request ) {
-		$book     = $this->get_book( $request['id'] );
+		$book     = $this->get_book( $request['book_id'] );
 		$previous = $this->prepare_item_for_response( $book, $request );
 
-		$deleted = master_delete_book( $request['id'] );
+		$deleted = master_delete_book( $request['book_id'] );
 
 		if ( ! $deleted ) {
 			return new WP_Error(
@@ -444,7 +444,7 @@ class LibraryMaster extends WP_REST_Controller {
 
 		$links = array(
 			'self'       => array(
-				'href' => rest_url( trailingslashit( $base ) . $item->id ),
+				'href' => rest_url( trailingslashit( $base ) . $item->book_id ),
 			),
 			'collection' => array(
 				'href' => rest_url( $base ),
@@ -469,7 +469,7 @@ class LibraryMaster extends WP_REST_Controller {
 			'title'      => 'book',
 			'type'       => 'object',
 			'properties' => array(
-				'id'               => array(
+				'book_id'               => array(
 					'description' => __( 'Unique identifier for the object.' ),
 					'type'        => 'integer',
 					'context'     => array( 'view', 'edit' ),

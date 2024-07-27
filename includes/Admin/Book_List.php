@@ -69,17 +69,17 @@ class Book_List extends \WP_List_Table {
 	public function column_title( $item ) {
 		$actions = array();
 
-		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=library-master&action=edit&id=' . $item->id ), $item->id, __( 'Edit', 'library-master' ), __( 'Edit', 'library-master' ) );
+		$actions['edit']   = sprintf( '<a href="%s" title="%s">%s</a>', admin_url( 'admin.php?page=library-master&action=edit&id=' . $item->book_id ), $item->book_id, __( 'Edit', 'library-master' ), __( 'Edit', 'library-master' ) );
 		$actions['delete'] = sprintf(
 			'<a href="#" class="submit_delete" title="%s" data-id="%s">%s</a>',
 			__( 'Delete', 'library-master' ),
-			$item->id,
+			$item->book_id,
 			__( 'Delete', 'library-master' )
 		);
 
 		return sprintf(
 			'<a href="%1$s"><strong>%2$s</strong></a> %3$s',
-			admin_url( 'admin.php?page=library-master&action=view&id=' . $item->id ),
+			admin_url( 'admin.php?page=library-master&action=view&id=' . $item->book_id ),
 			$item->title,
 			$this->row_actions( $actions )
 		);
@@ -88,7 +88,7 @@ class Book_List extends \WP_List_Table {
 	public function column_cb( $item ) {
 		return sprintf(
 			'<input type="checkbox" name="book_id[]" value="%d" />',
-			$item->id
+			$item->book_id
 		);
 	}
 
