@@ -35,4 +35,4 @@ npm run build
 2. Cache not set
 
 ## To display frontend data with react
-### use `shortcode` '[]'library-master']'
+### use `shortcode` '['library-master']'
