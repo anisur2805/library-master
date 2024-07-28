@@ -24,6 +24,8 @@ class Shortcode {
 		wp_enqueue_script( 'library-script' );
 		wp_enqueue_style( 'library-style' );
 
-		return '<div id="ce-app"></div>';
+		ob_start();
+		echo '<div id="ce-app"></div>';
+		return ob_get_clean();
 	}
 }

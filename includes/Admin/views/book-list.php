@@ -22,10 +22,6 @@ use CE\Library_Master\Admin;
 		$table = new Admin\Book_List();
 		$table->prepare_items();
 
-		if ( isset( $_REQUEST['s'] ) ) {
-			$search_item = $_REQUEST['s'];
-		}
-
 		$table->search_box( 'Search Items', 'search-id' );
 		$table->display();
 		?>

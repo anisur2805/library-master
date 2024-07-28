@@ -70,5 +70,19 @@ class Assets {
 				'error'   => __( 'Something went wrong', 'library-master' ),
 			)
 		);
+
+		if ( ! is_admin() ) {
+			wp_enqueue_script( 'tailwind-js', LIBRARY_MASTER_ASSETS . '/js/tailwind.js' );
+			wp_enqueue_script( 'react-frontend', LIBRARY_MASTER_DIST . '/index.bundle.js', array( 'jquery', 'wp-element', 'wp-api' ), time(), true );
+			wp_localize_script(
+				'react-frontend',
+				'app',
+				array(
+					'root'  => esc_url_raw( rest_url() ),
+					'nonce' => wp_create_nonce( 'wp_rest' ),
+				)
+			);
+
+		}
 	}
 }

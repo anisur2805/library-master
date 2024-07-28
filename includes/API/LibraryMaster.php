@@ -21,7 +21,7 @@ class LibraryMaster extends WP_REST_Controller {
 				array(
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_book_items' ),
-					'permission_callback' => array( $this, 'get_items_permission_check' ),
+					'permission_callback' => '__return_true',
 					'args'                => $this->get_collection_params(),
 				),
 				array(
@@ -184,6 +184,8 @@ class LibraryMaster extends WP_REST_Controller {
 	 * @return \WP_REST_Request|WP_Error
 	 */
 	public function create_book_item( \WP_REST_Request $request ) {
+
+		error_log( 'Alt log: ' . print_r( $request->get_params() ) );
 
 		$book = $this->prepare_item_for_database( $request );
 
