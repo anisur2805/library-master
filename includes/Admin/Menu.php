@@ -21,7 +21,6 @@ class Menu {
 		$page_title = __( 'Library Master', 'library-master' );
 		$hook       = add_menu_page( $page_title, $page_title, $capability, $parent_slug, array( $this->master_library, 'plugin_page' ), 'dashicons-welcome-learn-more' );
 		add_submenu_page( $parent_slug, __( 'Library Master', 'library-master' ), __( 'Library Master', 'library-master' ), $capability, 'library-master', array( $this->master_library, 'plugin_page' ) );
-		add_submenu_page( $parent_slug, __( 'Settings', 'library-master' ), __( 'Settings', 'library-master' ), $capability, 'library-master-settings', array( $this, 'settings_page' ) );
 
 		add_action( 'admin_head-' . $hook, array( $this, 'enqueue_assets' ) );
 	}
