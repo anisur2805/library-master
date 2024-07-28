@@ -89,7 +89,7 @@ function fetch_master_books( $args = array() ) {
 
 	$defaults = array(
 		'offset'  => 0,
-		'number'  => 20,
+		'number'  => 10,
 		'orderby' => 'book_id',
 		'order'   => 'DESC',
 		'search'  => '',
@@ -154,7 +154,6 @@ function master_books_count() {
 	$count     = get_transient( $cache_key );
 
 	if ( false === $count ) {
-		$count = (int) $wpdb->get_var( "SELECT count(book_id) FROM {$wpdb->prefix}ce_books" );
 		$count = (int) $wpdb->get_var( "SELECT count(book_id) FROM {$wpdb->prefix}ce_books" );
 
 		set_transient( $cache_key, $count, 12 * HOUR_IN_SECONDS );
@@ -234,4 +233,23 @@ function master_book_purge_cache( $book_id = null ) {
 	if ( ! is_null( $book_id ) && is_int( $book_id ) && $book_id > 0 ) {
 		delete_transient( $single_book_transient_prefix . $book_id );
 	}
+}
+
+/**
+ * Generate all cache key
+ */
+function generate_all_cache_key( $args ) {
+	$defaults = array(
+		'offset'  => 0,
+		'number'  => 20,
+		'orderby' => 'book_id',
+		'order'   => 'DESC',
+		'search'  => '',
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	// Generate a cache key that includes the search term if present
+	$key       = md5( serialize( array_diff_assoc( $args, $defaults ) ) );
+	$cache_key = 'ce_all_books' . $key;
 }
